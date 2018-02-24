@@ -12,6 +12,7 @@ from uuid import uuid4
 from flask import Flask, jsonify, request
 
 import sys
+import requests
 
 sys.path.append("../blockchain")
 from blockchain import Blockchain
@@ -32,9 +33,9 @@ def mine():
     # We must receive a reward for finding the proof.
     # The sender is "0" to signify that this node has mined a new coin.
     blockchain.new_transaction(
-        sender="0",
-        recipient=node_identifier,
-        amount=1,
+        sender = "0",
+        recipient = node_identifier,
+        amount = 1,
     )
 
     # Forge the new Block by adding it to the chain
@@ -52,7 +53,7 @@ def mine():
 
 @app.route('/transactions/new', methods=['POST'])
 def new_transaction():
-    values = requests.get_json()
+    values = request.get_json()
     #Check that the required fields are in the POST'ed data
     required = ['sender', 'recipient', 'amount']
     if not all(k in values for k in required):
